@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:math';
+
+
 
 void main (){
   runApp(MyApp());
@@ -35,7 +38,8 @@ class _Home extends State<Home> {
     "assets/five.png",
     "assets/six.png"
   ];
-  var r = 0 ;
+  var r = 1;
+  bool anim = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,18 +51,29 @@ class _Home extends State<Home> {
       ),
       body: Center(
         child: Container(
-          width: 180,
-          height: 180,
+          width: 200,
+          height: 200,
           child: GestureDetector(
-            onDoubleTap: (){
-              setState((){
-                var rd = new Random();
-                r =  rd.nextInt(5);
-              });
-            },
-           child: Image.asset(listImagesnotFound[r]),
-           ),
-        ),
+              onTap: (){
+                setState((){
+                  anim = true;
+                });
+                Future.delayed(Duration(seconds : 1),(){
+                  anim = false;
+                  setState(() {
+                    var rd = new Random();
+                    r =  rd.nextInt(5) + 1;
+                  });
+                });
+              },
+           child: anim
+              ? Container(
+                  height: 180,
+                  width: 180,
+              child: Image.asset('assets/roll_dice.gif'),
+            ) : Image.asset(listImagesnotFound[r])
+           )
+         ),
         ),
       );
   }
